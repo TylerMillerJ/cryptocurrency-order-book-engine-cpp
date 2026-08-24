@@ -3,12 +3,17 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <vector>
 
+#include "OrderBookEntry.h"
 
 class MerkelMain{
     public:
         MerkelMain();
         void initialize();
+
+    private:
+        void loadOrderBook();
         void printMenuOptions();
         int getUserOption();
         bool userOptionIsValid(int userOption);
@@ -19,6 +24,8 @@ class MerkelMain{
         void enterBid();
         void printWallet();
         void continueToNextTimeFrame();
+
+        std::vector<OrderBookEntry> orders;
 
 };
 

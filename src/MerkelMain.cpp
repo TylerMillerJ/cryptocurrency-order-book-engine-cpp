@@ -1,17 +1,19 @@
-#include "MerkelMain.h"
-
 #include <iostream>
 #include <cstdlib>
+#include <vector>
 
-
+#include "MerkelMain.h"
+#include "OrderBookEntry.h"
 
 
 MerkelMain::MerkelMain(){
-
-
+    
 }
 
 void MerkelMain::initialize(){
+
+    loadOrderBook();
+
     int input;
 
     while(true)
@@ -22,6 +24,15 @@ void MerkelMain::initialize(){
     }
 
 }
+
+void MerkelMain::loadOrderBook(){
+
+    orders.push_back(OrderBookEntry{"Test 1: 2020/03/17 17:01:24.88449", "ETH/BTC", OrderBookType::bid, 0.02121, 1000});
+    orders.push_back(OrderBookEntry{"Test 2: 2020/03/17 17:01:24.88449", "ETH/BTC", OrderBookType::bid, 0.02121, 1000});
+    orders.push_back(OrderBookEntry{"Test 3: 2020/03/17 17:01:24.88449", "ETH/BTC", OrderBookType::ask, 0.02121, 1000});
+
+}
+
 
 
 void MerkelMain::printMenuOptions()
