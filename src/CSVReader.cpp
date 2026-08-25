@@ -57,10 +57,10 @@ std::vector<std::string> CSVReader::tokenise(std::string csvLine, char seperator
             break;
         }
 
-        if (end == 0){
-            token = csvLine.substr(start, end - start);
+        if (end == std::string::npos){
+            token = csvLine.substr(start);
         } else {
-            token = csvLine.substr(start, csvLine.length() - start);
+            token = csvLine.substr(start, end - start);
         }
 
         tokens.push_back(token);
@@ -81,6 +81,7 @@ OrderBookEntry CSVReader::stringToOrderBookEntry(std::vector<std::string> tokens
 
         std::string timeStamp = tokens[0];
         std::string product = tokens[1];
+
         OrderBookType type = OrderBookEntry::stringToOrderBookType(tokens[2]);
         double price;
         double amount;
