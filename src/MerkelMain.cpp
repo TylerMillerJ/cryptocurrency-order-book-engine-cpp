@@ -157,7 +157,24 @@ void MerkelMain::printHelpMenu()
 
 void MerkelMain::printExchangeStatistics()
 {
+    long unsigned int asks = 0;
+    long unsigned int bids = 0;
+
+    for (const OrderBookEntry& entry : orders)
+    {
+        if (entry.type == OrderBookType::ask)
+        {
+            asks++;
+        } else if (entry.type == OrderBookType::bid)
+        {
+            bids++;
+        }
+    }
+
     std::cout << "Order Book Contains " << orders.size() << " Orders" <<  std::endl;
+    std::cout << "Order Book Contains " << bids << " Bids" <<  std::endl;
+    std::cout << "Order Book Contains " << asks << " Asks" <<  std::endl;
+
 }
 
 void MerkelMain::enterOffer()
