@@ -1,3 +1,5 @@
+# Ignore the build folder at the repository root
+/build/
 
-# Compiled executable/build output
-/OrderBookEngine/
+# Ignore the OrderBookEngine executable
+/OrderBookEngine
