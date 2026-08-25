@@ -13,8 +13,6 @@ MerkelMain::MerkelMain(){
 
 void MerkelMain::initialize(){
 
-    loadOrderBook();
-
     int input;
 
     while(true)
@@ -24,10 +22,6 @@ void MerkelMain::initialize(){
         proccessMenuOptions(input);
     }
 
-}
-
-void MerkelMain::loadOrderBook(){
-       orders = CSVReader::readCSV("20200317.csv");
 }
 
 
@@ -157,24 +151,12 @@ void MerkelMain::printHelpMenu()
 
 void MerkelMain::printExchangeStatistics()
 {
-    long unsigned int asks = 0;
-    long unsigned int bids = 0;
 
-    for (const OrderBookEntry& entry : orders)
+    for (std::string const& product : orderBook.getKnownProducts())
     {
-        if (entry.type == OrderBookType::ask)
-        {
-            asks++;
-        } else if (entry.type == OrderBookType::bid)
-        {
-            bids++;
-        }
+        std::cout << "Product: " << product << std::endl;
     }
-
-    std::cout << "Order Book Contains " << orders.size() << " Orders" <<  std::endl;
-    std::cout << "Order Book Contains " << bids << " Bids" <<  std::endl;
-    std::cout << "Order Book Contains " << asks << " Asks" <<  std::endl;
-
+  
 }
 
 void MerkelMain::enterOffer()

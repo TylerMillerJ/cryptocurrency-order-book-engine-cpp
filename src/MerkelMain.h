@@ -2,6 +2,7 @@
 #define MERKEL_MAIN_H
 
 #include "OrderBookEntry.h"
+#include "OrderBook.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -26,8 +27,7 @@ class MerkelMain{
         void printWallet();
         void continueToNextTimeFrame();
 
-        std::vector<OrderBookEntry> orders;
-
+        OrderBook orderBook{"20200317.csv"};     
 };
 
 
