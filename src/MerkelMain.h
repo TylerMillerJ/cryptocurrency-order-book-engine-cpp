@@ -1,11 +1,12 @@
 #ifndef MERKEL_MAIN_H
 #define MERKEL_MAIN_H
 
+#include "OrderBookEntry.h"
+
 #include <iostream>
 #include <cstdlib>
 #include <vector>
-
-#include "OrderBookEntry.h"
+#include <stdexcept>
 
 class MerkelMain{
     public:

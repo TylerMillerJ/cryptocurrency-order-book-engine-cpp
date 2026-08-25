@@ -2,7 +2,7 @@
 
 CXX = g++
 
-CXXFLAGS = -std=c++23 -O2 -Wall -Wextra -Werror -Wshadow -MMD -MP
+CXXFLAGS = -std=c++23 -O2 -Wall -Wextra -Wshadow -MMD -MP
 
 SRC_DIR = src
 BUILD_DIR = build

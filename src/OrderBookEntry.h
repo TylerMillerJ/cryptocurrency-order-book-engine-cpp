@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum class OrderBookType{bid, ask};
+enum class OrderBookType{bid, ask, unknown};
 
 class OrderBookEntry
 {
@@ -16,6 +16,7 @@ class OrderBookEntry
 
     public:
         OrderBookEntry(std::string timestamp, std::string product, OrderBookType type, double price, double amount);
+        static OrderBookType stringToOrderBookType(std::string string);
 };
 
 

@@ -1,13 +1,14 @@
+#include "MerkelMain.h"
+#include "OrderBookEntry.h"
+#include "CSVReader.h"
+
 #include <iostream>
 #include <cstdlib>
 #include <vector>
-
-#include "MerkelMain.h"
-#include "OrderBookEntry.h"
-
+#include <stdexcept>
 
 MerkelMain::MerkelMain(){
-    
+
 }
 
 void MerkelMain::initialize(){
@@ -26,11 +27,7 @@ void MerkelMain::initialize(){
 }
 
 void MerkelMain::loadOrderBook(){
-
-    orders.push_back(OrderBookEntry{"Test 1: 2020/03/17 17:01:24.88449", "ETH/BTC", OrderBookType::bid, 0.02121, 1000});
-    orders.push_back(OrderBookEntry{"Test 2: 2020/03/17 17:01:24.88449", "ETH/BTC", OrderBookType::bid, 0.02121, 1000});
-    orders.push_back(OrderBookEntry{"Test 3: 2020/03/17 17:01:24.88449", "ETH/BTC", OrderBookType::ask, 0.02121, 1000});
-
+       orders = CSVReader::readCSV("20200317.csv");
 }
 
 
@@ -68,20 +65,36 @@ int MerkelMain::getUserOption()
 {
     std::cout << "======================" << std::endl;
 
-    int userOption = -1;
+    std::string userOptionInput;
+    int userOpt;
 
-    do
+    while (true) 
+    {
+        std::cout << "Enter Your Choice: ";
+        std::cin >> userOptionInput;
+        std::cout << std::endl;
+
+        try 
         {
-            std::cout << "Enter Your Choice: ";
-            std::cin >> userOption;
-            std::cout << std::endl;
-
-        } while (!userOptionIsValid(userOption));
-
-    std::cout << "======================" << std::endl;
-    std::cout << "You Selected Option: " << userOption << std::endl;
-    return userOption;
+            userOpt = std::stoi(userOptionInput);
+        }
+        catch(...) 
+        {
+            std::cerr << "Invalid Option: Please enter 0-6" << std::endl;
+            continue;
+        }
+        
+        if (userOptionIsValid(userOpt)){
+            std::cout << "======================" << std::endl;
+            std::cout << "You Selected Option: " << userOpt << std::endl;
+            return userOpt;
+        } else {
+            std::cerr << "Invalid Option: Please enter 0-6" << std::endl;
+            continue;        
+        }
+    }
 }
+
 
 
 
@@ -144,7 +157,7 @@ void MerkelMain::printHelpMenu()
 
 void MerkelMain::printExchangeStatistics()
 {
-    std::cout << "Printing Stats" << std::endl;
+    std::cout << "Order Book Contains " << orders.size() << " Orders" <<  std::endl;
 }
 
 void MerkelMain::enterOffer()

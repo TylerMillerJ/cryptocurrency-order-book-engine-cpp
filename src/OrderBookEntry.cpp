@@ -1,6 +1,6 @@
-#include <string>
-
 #include "OrderBookEntry.h"
+
+#include <string>
 
 
 OrderBookEntry::OrderBookEntry(std::string _timestamp, std::string _product, OrderBookType _type, double _price, double _amount)
@@ -12,3 +12,17 @@ OrderBookEntry::OrderBookEntry(std::string _timestamp, std::string _product, Ord
             {
             }
         
+        
+OrderBookType OrderBookEntry::stringToOrderBookType(std::string string)
+{
+    if (string == "ask"){
+        return OrderBookType::ask;
+    }
+    if (string == "bid"){
+        return OrderBookType::bid;
+    }
+
+    return OrderBookType::unknown;
+
+}
+
