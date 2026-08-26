@@ -29,7 +29,11 @@ class OrderBook
         /** search the lowest price in the vector of OrderBookEntry's */
             static double getLowPrice(std::vector<OrderBookEntry>& orders);
 
-    private:
+            void insertOrder(OrderBookEntry& order);
+
+        std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
+   
+        private:
         std::vector<OrderBookEntry> orders;
 };
 

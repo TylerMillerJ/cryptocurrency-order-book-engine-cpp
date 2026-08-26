@@ -30,3 +30,13 @@ bool OrderBookEntry::compareByTimestamp(OrderBookEntry& entry1, OrderBookEntry& 
 {
     return entry1.timestamp < entry2.timestamp;
 }
+
+bool OrderBookEntry::compareByPriceAscending(OrderBookEntry& entry1, OrderBookEntry& entry2)
+{
+    return entry1.timestamp < entry2.timestamp;
+}
+
+bool OrderBookEntry::compareByPriceDescending(OrderBookEntry& entry1, OrderBookEntry& entry2)
+{
+    return entry1.timestamp > entry2.timestamp;
+}

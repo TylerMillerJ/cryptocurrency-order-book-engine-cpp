@@ -188,8 +188,11 @@ void MerkelMain::enterAsk()
         try
         {
             OrderBookEntry entry = CSVReader::stringToOrderBookEntry(currentTime, tokens[0], OrderBookType::ask, tokens[1], tokens[2]);
+            orderBook.insertOrder(entry);
             std::cout << "Your Ask Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
-        } catch (const std::exception& exception)
+        
+        }
+        catch (const std::exception& exception)
         {
             std::cerr << "enterAsk(): Entry Failed" << std::endl;
         }
@@ -211,5 +214,14 @@ void MerkelMain::printWallet()
 void MerkelMain::continueToNextTimeFrame()
 {
     std::cout << "Continuing forward in time" << std::endl;
+    std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids("ETH/BTC", currentTime);
+    std::cout << "Sales Made: " << sales.size() << std::endl;
+    for (OrderBookEntry sale : sales)
+    {
+        std::cout << "Sale Price: " << sale.price << std::endl;
+        std::cout << "Sale Amount: " << sale.amount << std::endl;
+
+
+    }
     currentTime = orderBook.getNextTime(currentTime);
 }
