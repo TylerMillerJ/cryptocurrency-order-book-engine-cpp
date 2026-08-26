@@ -155,6 +155,11 @@ void MerkelMain::printExchangeStatistics()
     for (std::string const& product : orderBook.getKnownProducts())
     {
         std::cout << "Product: " << product << std::endl;
+        std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::bid, product, "2020/03/17 17:01:24.884492");
+        std::cout << "Bids Seen " << entries.size() << std::endl;
+        std::cout << "Max Bid " << OrderBook::getHighPrice(entries) << std::endl;
+        std::cout << "Min Bid " << OrderBook::getLowPrice(entries) << std::endl;
+
     }
   
 }

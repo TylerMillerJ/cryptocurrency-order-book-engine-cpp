@@ -19,6 +19,9 @@ class OrderBook
         /** return vector of Orders according to the sent filters */
             std::vector<OrderBookEntry>  getOrders(OrderBookType type, std::string product, std::string timestamp);
     
+            static double getHighPrice(std::vector<OrderBookEntry>& orders);
+            static double getLowPrice(std::vector<OrderBookEntry>& orders);
+
     private:
         std::vector<OrderBookEntry> orders;
 };
