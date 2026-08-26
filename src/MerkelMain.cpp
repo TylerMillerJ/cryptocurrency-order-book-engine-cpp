@@ -42,8 +42,8 @@ void MerkelMain::printMenuOptions()
     // 2. Print Exchange Stats
     std::cout << "2. Print Exchange Statistics" << std::endl;
 
-    // 3. Make Offer - (An offer to sell an asset/item)
-    std::cout << "3. Make An Offer" << std::endl;
+    // 3. Make Ask - (An Ask to sell an asset/item)
+    std::cout << "3. Make An Ask" << std::endl;
 
     // 4. Make Bid - (A bid to purchase an asset/item)
     std::cout << "4. Make A Bid" << std::endl;
@@ -70,7 +70,8 @@ int MerkelMain::getUserOption()
     while (true) 
     {
         std::cout << "Enter Your Choice: ";
-        std::cin >> userOptionInput;
+
+        std::getline(std::cin, userOptionInput);
         std::cout << std::endl;
 
         try 
@@ -79,7 +80,7 @@ int MerkelMain::getUserOption()
         }
         catch(...) 
         {
-            std::cerr << "Invalid Option: Please enter 0-6" << std::endl;
+            std::cerr << "Invalid Option: Cannot Convert Input To Integer" << std::endl;
             continue;
         }
         
@@ -106,7 +107,6 @@ bool MerkelMain::userOptionIsValid(int userOption)
     } else
     {
         std::cerr << userOption << " Is an Invalid Choice. Please enter a value between 1-6." << std::endl;
-        printMenuOptions();
         return false;
     }
 
@@ -129,7 +129,7 @@ void MerkelMain::proccessMenuOptions(int userOption)
         break;
 
     case 3:
-        enterOffer();
+        enterAsk();
         break;
 
     case 4:
@@ -169,10 +169,34 @@ void MerkelMain::printExchangeStatistics()
   
 }
 
-void MerkelMain::enterOffer()
+void MerkelMain::enterAsk()
 {
-    std::cout << "Making an Offer" << std::endl;
+    std::cout << "Make an Ask - Format: Product, Price, Amount" << std::endl;
+    std::cout << "eg: BTC/ETH, 200, 0.5" << std::endl;
+    std::cout << "Product, Price, Amount: ";
+
+    std::string input;
+    std::getline(std::cin, input);
+
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+
+    if (tokens.size() != 3)
+    {
+        std::cerr << "Error: Does not have 3 tokens: " << input << std::endl;
+    } else 
+    {
+        try
+        {
+            OrderBookEntry entry = CSVReader::stringToOrderBookEntry(currentTime, tokens[0], OrderBookType::ask, tokens[1], tokens[2]);
+            std::cout << "Your Ask Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
+        } catch (const std::exception& exception)
+        {
+            std::cerr << "enterAsk(): Entry Failed" << std::endl;
+        }
+    }
+
 }
+
 
 void MerkelMain::enterBid()
 {

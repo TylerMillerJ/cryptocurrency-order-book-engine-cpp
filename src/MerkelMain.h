@@ -22,7 +22,7 @@ class MerkelMain{
         void proccessMenuOptions(int userOption);
         void printHelpMenu();
         void printExchangeStatistics();
-        void enterOffer();
+        void enterAsk();
         void enterBid();
         void printWallet();
         void continueToNextTimeFrame();

@@ -79,7 +79,7 @@ OrderBookEntry CSVReader::stringToOrderBookEntry(std::vector<std::string> tokens
         throw std::exception{};
     }
 
-        std::string timeStamp = tokens[0];
+        std::string timestamp = tokens[0];
         std::string product = tokens[1];
 
         OrderBookType type = OrderBookEntry::stringToOrderBookType(tokens[2]);
@@ -92,11 +92,33 @@ OrderBookEntry CSVReader::stringToOrderBookEntry(std::vector<std::string> tokens
         
     } catch (...)
     {
-        std::cerr << "Bad Float: " << tokens[3] << " OR  " << tokens[4] << std::endl; 
+        std::cerr << "CSVReader::stringToOrderBookEntry - Bad Float: " << tokens[3] << " OR  " << tokens[4] << std::endl; 
         throw;
     }
 
-    OrderBookEntry orderBookEntry{timeStamp, product, type, price, amount};
+    OrderBookEntry orderBookEntry{timestamp, product, type, price, amount};
+
+    return orderBookEntry;
+}
+
+OrderBookEntry CSVReader::stringToOrderBookEntry(std::string timestamp, std::string product, OrderBookType type, std::string priceString, std::string amountString)
+{
+
+    double price;
+    double amount;
+
+    try 
+    {
+        price = stod(priceString);
+        amount = stod(amountString);
+        
+    } catch (...)
+    {
+        std::cerr << "CSVReader::stringToOrderBookEntry - Bad Float: " << priceString << " OR  " << amountString << std::endl; 
+        throw;
+    }
+
+    OrderBookEntry orderBookEntry{timestamp, product, type, price, amount};
 
     return orderBookEntry;
 }
