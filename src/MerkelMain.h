@@ -27,6 +27,7 @@ class MerkelMain{
         void printWallet();
         void continueToNextTimeFrame();
 
+        std::string currentTime;
         OrderBook orderBook{"20200317.csv"};     
 };
 
