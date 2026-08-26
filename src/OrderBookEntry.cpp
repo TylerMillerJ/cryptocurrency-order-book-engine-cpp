@@ -26,3 +26,7 @@ OrderBookType OrderBookEntry::stringToOrderBookType(std::string string)
 
 }
 
+bool OrderBookEntry::compareByTimestamp(OrderBookEntry& entry1, OrderBookEntry& entry2)
+{
+    return entry1.timestamp < entry2.timestamp;
+}
