@@ -16,6 +16,22 @@ void MerkelMain::initialize(){
     int input;
     currentTime = orderBook.getEarliestTime();
 
+    /*
+    wallet.insertCurrency("BTC", 11);
+    wallet.insertCurrency("USD", 1.9);
+    wallet.insertCurrency("ETH", 7.99857);
+
+    std::cout <<"Wallet Has BTC?: " <<   wallet.containsCurrency("BTC", 10) << std::endl;
+    std::cout << wallet.toString() << std::endl;
+
+    wallet.removeCurrency("BTC", 10);
+    wallet.removeCurrency("USD", 10);
+    wallet.removeCurrency("ETH", -7.99857);
+
+    std::cout << wallet.toString() << std::endl;
+*/
+
+
     while(true)
     {
         printMenuOptions();
@@ -188,9 +204,16 @@ void MerkelMain::enterAsk()
         try
         {
             OrderBookEntry entry = CSVReader::stringToOrderBookEntry(currentTime, tokens[0], OrderBookType::ask, tokens[1], tokens[2]);
-            orderBook.insertOrder(entry);
-            std::cout << "Your Ask Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
+            
+            if (wallet.canFullfillOrder(entry))
+            {
+                orderBook.insertOrder(entry);
+                std::cout << "Your Ask Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
+            } else {
+                std::cout << "Wallet has insufficient funds" <<  std::endl;
         
+            }
+
         }
         catch (const std::exception& exception)
         {

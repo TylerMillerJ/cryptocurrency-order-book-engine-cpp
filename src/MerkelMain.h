@@ -3,6 +3,7 @@
 
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
+#include "Wallet.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -28,7 +29,8 @@ class MerkelMain{
         void continueToNextTimeFrame();
 
         std::string currentTime;
-        OrderBook orderBook{"20200317.csv"};     
+        OrderBook orderBook{"20200317.csv"};
+        Wallet wallet{};    
 };
 
 
