@@ -5,6 +5,7 @@
 
 #include <string>
 #include <map>
+#include <set>
 
 class Wallet
 {
@@ -24,7 +25,7 @@ class Wallet
         std::string toString();
 
         /** checks if the wallet can fullfill this ask/bid*/
-        bool canFullfillOrder(OrderBookEntry order);
+        bool canFulfillOrder(const OrderBookEntry& order);
         
         /** processes sale input*/
         void processSale(OrderBookEntry& sale);
@@ -34,10 +35,14 @@ class Wallet
 
         /** deposit funds into the wallet */
         void makeDeposit();
+        
 
     private:
         /** currencies and their corresponding balances */
         std::map<std::string, double> currencies;
+        
+        /** supported currencies on this platform*/
+        static const std::set<std::string> supportedCurrencies;
 
 };
 

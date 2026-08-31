@@ -10,6 +10,13 @@
 Wallet::Wallet()
 {
 
+    currencies["USDT"] = 10000.0;
+    currencies["BTC"] = 9470.0;
+    currencies["LTC"] = 12.0;
+    currencies["ETH"] = 200.00;
+    currencies["DOGE"] = 1.00;
+    currencies["SOL"] = 20.00;
+
 }
 
 bool Wallet::containsCurrency(std::string type, double amount)
@@ -73,10 +80,22 @@ std::string Wallet::toString()
 
 }
 
-bool Wallet::canFullfillOrder(OrderBookEntry order)
+bool Wallet::canFulfillOrder(const OrderBookEntry& order)
 {
     std::vector<std::string> currenciesVec = CSVReader::tokenise(order.product, '/');
 
+    if (currenciesVec.size() != 2 || currenciesVec[0].empty(), currenciesVec[1].empty())
+    {
+        std::cerr << "Invalid Product: " << order.product << std::endl;
+        return false;
+    }
+
+    if (order.amount <= 0 || order.price <= 0)
+    {
+        std::cerr << "Error: Order Amount and Price Must Be Greater Then 0" << std::endl;
+        return false;
+    }
+    
     //ask
     if (order.type == OrderBookType::ask)
     {
@@ -174,8 +193,9 @@ void Wallet::makeDeposit()
 
     if (depositTokens.size() != 2)
     {
-        std::cout << "Invalid Input: Tokens Not Equal To 2" << std::endl;
-    }
+        std::cerr << "Invalid Input: Tokens Not Equal To 2" << std::endl;
+        return;
+    } 
     
     try 
     {
@@ -191,3 +211,12 @@ void Wallet::makeDeposit()
         }
     }
 
+const std::set<std::string> Wallet::supportedCurrencies =
+{
+    "USDT",
+    "BTC",
+    "LTC",
+    "ETH",
+    "DOGE",
+    "SOL"
+};

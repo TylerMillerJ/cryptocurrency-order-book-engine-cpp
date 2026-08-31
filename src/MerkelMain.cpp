@@ -17,7 +17,6 @@ void MerkelMain::initialize(){
 
     int input;
     currentTime = orderBook.getEarliestTime();
-    wallet.insertCurrency("BTC", 10000);
 
     while(true)
     {
@@ -195,9 +194,23 @@ void MerkelMain::enterAsk()
     {
         try
         {
+            double price = std::stod(tokens[1]);
+            double amount = std::stod(tokens[2]);
+
+            if (price <= 0)
+            {
+                std::cerr << "Error: Price must be greater than zero" << std::endl;
+                return;
+            }
+            if (amount <= 0)
+            {
+                std::cerr << "Error: Amount must be greater than zero" << std::endl;
+                return;
+            }
+
             OrderBookEntry entry = CSVReader::stringToOrderBookEntry(currentTime, tokens[0], OrderBookType::ask, tokens[1], tokens[2]);
             
-            if (wallet.canFullfillOrder(entry))
+            if (wallet.canFulfillOrder(entry))
             {
                 entry.username = "simulationUser";
                 orderBook.insertOrder(entry);
@@ -231,17 +244,33 @@ void MerkelMain::enterBid()
     if (tokens.size() != 3)
     {
         std::cerr << "Error: Does not have 3 tokens: " << input << std::endl;
+        return;
+
     } else 
     {
+        
         try
         {
+        double price = std::stod(tokens[1]);
+        double amount = std::stod(tokens[2]);
+
+        if (price <= 0)
+        {
+            std::cerr << "Error: Price must be greater than zero" << std::endl;
+            return;
+        }
+        if (amount <= 0)
+        {
+            std::cerr << "Error: Amount must be greater than zero" << std::endl;
+            return;
+        }
             OrderBookEntry entry = CSVReader::stringToOrderBookEntry(currentTime, tokens[0], OrderBookType::bid, tokens[1], tokens[2]);
             
-            if (wallet.canFullfillOrder(entry))
+            if (wallet.canFulfillOrder(entry))
             {
                 entry.username = "simulationUser";
                 orderBook.insertOrder(entry);
-                std::cout << "Your Bid Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
+                std::cout << "Your Bid Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", bid, " << entry.price << ", " << entry.amount << std::endl;
             } else {
                 std::cout << "Wallet has insufficient funds" <<  std::endl;
         
