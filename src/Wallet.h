@@ -29,12 +29,14 @@ class Wallet
         /** processes sale input*/
         void processSale(OrderBookEntry& sale);
 
+        /** print the currencies and balances in the wallet */
         void printWallet();
 
+        /** deposit funds into the wallet */
         void makeDeposit();
 
-
     private:
+        /** currencies and their corresponding balances */
         std::map<std::string, double> currencies;
 
 };

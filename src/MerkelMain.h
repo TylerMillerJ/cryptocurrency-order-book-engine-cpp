@@ -13,23 +13,51 @@
 class MerkelMain{
     public:
         MerkelMain();
+
+        /** initialize simulation*/
         void initialize();
 
-    private:
-        void loadOrderBook();
-        void printMenuOptions();
-        int getUserOption();
-        bool userOptionIsValid(int userOption);
-        void proccessMenuOptions(int userOption);
-        void printHelpMenu();
-        void printExchangeStatistics();
-        void enterAsk();
-        void enterBid();
-        void continueToNextTimeFrame();
+private:
 
-        std::string currentTime;
-        OrderBook orderBook{"20200317.csv"};
-        Wallet wallet{};    
+    /** load order book */
+    void loadOrderBook();
+
+    /** print menu options */
+    void printMenuOptions();
+
+    /** get user option */
+    int getUserOption();
+
+    /** check if user option is valid */
+    bool userOptionIsValid(int userOption);
+
+    /** process menu options */
+    void proccessMenuOptions(int userOption);
+
+    /** print help menu */
+    void printHelpMenu();
+
+    /** print exchange statistics */
+    void printExchangeStatistics();
+
+    /** enter ask order */
+    void enterAsk();
+
+    /** enter bid order */
+    void enterBid();
+
+    /** continue to next time frame */
+    void continueToNextTimeFrame();
+
+    /** current simulated time */
+    std::string currentTime;
+
+    /** order book data */
+    OrderBook orderBook{"20200317.csv"};
+
+    /** user's wallet */
+    Wallet wallet{};
+ 
 };
 
 

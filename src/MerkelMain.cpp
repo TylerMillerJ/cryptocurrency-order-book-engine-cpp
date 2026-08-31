@@ -160,10 +160,10 @@ void MerkelMain::printHelpMenu()
 void MerkelMain::printExchangeStatistics()
 {
     std::cout << std::setprecision(15);
-    
+
     for (std::string const& product : orderBook.getKnownProducts())
     {
-        std::cout << "Product: " << product << std::endl;
+        std::cout << "Product: " << product << ": " << std::endl;
         std::cout << std::endl;
 
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::bid, product, currentTime);
@@ -171,7 +171,7 @@ void MerkelMain::printExchangeStatistics()
         std::cout << "Bids Seen " << entries.size() << std::endl;
         std::cout << "Max Bid " << OrderBook::getHighPrice(entries) << std::endl;
         std::cout << "Min Bid " << OrderBook::getLowPrice(entries) << std::endl;
-        std::cout << "-----------------------------------" << OrderBook::getLowPrice(entries) << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
 
     }
   
