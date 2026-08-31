@@ -1,64 +1,124 @@
+# Initialize / display wallet
 5
+
+# Deposit 1 BTC
 1
 BTC, 1
+
+# Deposit 1 USDT
 1
 USDT, 1
 
+# Display wallet
 5
 
+
+# Submit a valid bid: buy 0.1 BTC at 5 USDT
 3
 BTC/USDT, 5, .1
+
+# Submit a valid ask: sell 0.1 BTC at 49 USDT
 4
 BTC/USDT, 49, .1
+
+# Continue forward in time / run order matching
 6
 5
 
+# Continue forward in time / run order matching
 6
 5
 
+# Continue forward in time / run order matching
 6
 5
 
+
+# Test invalid bid inputs
 2
+
+# Missing amount
 3
 BTC/USDT, 5
+
+# Too many arguments
 3
 BTC/USDT, 5, .1, extra
+
+# Invalid price
 3
 BTC/USDT, not-a-price, .1
+
+# Invalid amount
 3
 BTC/USDT, 5, not-an-amount
+
+# Invalid product
 3
 INVALIDPRODUCT, 5, .1
+
+# Negative price
 3
 BTC/USDT, -5, .1
+
+# Negative amount
 3
 BTC/USDT, 5, -.1
+
+
+# Test invalid ask inputs
+4
+
+# Missing amount
 4
 BTC/USDT, 49
+
+# Too many arguments
 4
 BTC/USDT, 49, .1, extra
+
+# Invalid price
 4
 BTC/USDT, not-a-price, .1
+
+# Invalid amount
 4
 BTC/USDT, 49, not-an-amount
+
+# Invalid product
 4
 INVALIDPRODUCT, 49, .1
+
+# Negative price
 4
 BTC/USDT, -49, .1
+
+# Negative amount
 4
 BTC/USDT, 49, -.1
-5
+
+
+# Test invalid deposit inputs
+
+# Valid deposit of 1 BTC
 1
 BTC
+
+# Invalid amount
 1
 BTC, not-a-number
+
+# Too many arguments
 1
 BTC, 1, extra
+
+# Negative deposit
 1
 BTC, -1
+
+# Invalid currency
 1
 INVALIDCURRENCY, 1
 
+# End / display wallet
 5
-
