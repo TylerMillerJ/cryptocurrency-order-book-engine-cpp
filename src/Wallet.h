@@ -5,7 +5,8 @@
 
 #include <string>
 #include <map>
-#include <set>
+#include <vector>
+
 
 class Wallet
 {
@@ -36,13 +37,19 @@ class Wallet
         /** deposit funds into the wallet */
         void makeDeposit();
         
+        /** checks supported currencies */
+        static bool isSupportedCurrency(const std::string& currency);
+        
+        /** prints all supported currencies */
+        static void printSupportedCurrencies();
+
 
     private:
         /** currencies and their corresponding balances */
         std::map<std::string, double> currencies;
         
         /** supported currencies on this platform*/
-        static const std::set<std::string> supportedCurrencies;
+        static const std::vector<std::string> supportedCurrencies;
 
 };
 

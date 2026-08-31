@@ -53,8 +53,11 @@ void MerkelMain::printMenuOptions()
     // 5. Print Wallet - (Where assets are stored)
     std::cout << "5. Open Wallet" << std::endl;
 
-    // 6. Continue
-    std::cout << "6. Continue To Next Time Frame In Simulation" << std::endl;
+    // 6. Deposit Any Valid Currencies
+    std::cout << "6. Make Deposit" << std::endl;
+
+    // 7. Continue
+    std::cout << "7. Continue To Next Time Frame In Simulation" << std::endl;
 
     std::cout << std::endl;
 
@@ -73,7 +76,14 @@ int MerkelMain::getUserOption()
     {
         std::cout << "Enter Your Choice: ";
 
-        std::getline(std::cin, userOptionInput);
+        
+        if (!std::getline(std::cin, userOptionInput))
+        {
+            std::cout << "End Of File Detected - Exiting Gracefully"
+                    << std::endl;
+
+            std::exit(0);
+        }
         std::cout << std::endl;
 
         try 
@@ -143,6 +153,10 @@ void MerkelMain::proccessMenuOptions(int userOption)
         break;
 
     case 6:
+        wallet.makeDeposit();
+        break;
+
+    case 7: 
         continueToNextTimeFrame();
         break;
 
@@ -178,13 +192,20 @@ void MerkelMain::printExchangeStatistics()
 
 void MerkelMain::enterAsk()
 {
+    wallet.printSupportedCurrencies();
     std::cout << "Make an Ask - Format: Product, Price, Amount" << std::endl;
     std::cout << "eg: BTC/ETH, 200, 0.5" << std::endl;
     std::cout << "Product, Price, Amount: ";
 
     std::string input;
-    std::getline(std::cin, input);
 
+    if (!std::getline(std::cin, input))
+    {
+        std::cout << "End Of File Detected - Exiting Gracefully"
+                << std::endl;
+
+        std::exit(0);
+    }
     std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
 
     if (tokens.size() != 3)
@@ -194,6 +215,13 @@ void MerkelMain::enterAsk()
     {
         try
         {
+            std::vector<std::string> currencies = CSVReader::tokenise(tokens[0], '/');
+            if(!Wallet::isSupportedCurrency(currencies[0]) || !Wallet::isSupportedCurrency(currencies[1]))
+        {
+            std::cerr << "Currency Not Supported " << input << std::endl;
+            wallet.printSupportedCurrencies();
+            return;
+        }
             double price = std::stod(tokens[1]);
             double amount = std::stod(tokens[2]);
 
@@ -232,13 +260,21 @@ void MerkelMain::enterAsk()
 
 void MerkelMain::enterBid()
 {
+    wallet.printSupportedCurrencies();
     std::cout << "Make an Bid - Format: Product, Price, Amount" << std::endl;
     std::cout << "eg: BTC/ETH, 200, 0.5" << std::endl;
     std::cout << "Product, Price, Amount: ";
 
     std::string input;
-    std::getline(std::cin, input);
 
+    if (!std::getline(std::cin, input))
+    {
+        std::cout << "End Of File Detected - Exiting Gracefully"
+                << std::endl;
+
+        std::exit(0);
+    }
+    
     std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
 
     if (tokens.size() != 3)
@@ -248,6 +284,18 @@ void MerkelMain::enterBid()
 
     } else 
     {
+        std::vector<std::string> currencies = CSVReader::tokenise(tokens[0], '/');
+
+        if(!Wallet::isSupportedCurrency(currencies[0]) || !Wallet::isSupportedCurrency(currencies[1]))
+        {
+            std::cerr << "Currency Not Supported " << input << std::endl;
+            wallet.printSupportedCurrencies();
+            return;
+        }
+
+        {
+
+        }
         
         try
         {
@@ -284,6 +332,7 @@ void MerkelMain::enterBid()
     }
 
 }
+
 
 void MerkelMain::continueToNextTimeFrame()
 {

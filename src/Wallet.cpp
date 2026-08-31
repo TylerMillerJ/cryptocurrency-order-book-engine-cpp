@@ -95,7 +95,7 @@ bool Wallet::canFulfillOrder(const OrderBookEntry& order)
         std::cerr << "Error: Order Amount and Price Must Be Greater Then 0" << std::endl;
         return false;
     }
-    
+
     //ask
     if (order.type == OrderBookType::ask)
     {
@@ -157,38 +157,27 @@ void Wallet::printWallet()
     std::cout << "------------------------------------------" << std::endl;
     std::cout << std::endl;
 
-    std::cout << "Press 0 to Return to Main Menu:" << std::endl;
-    std::cout << "Press 1 to Deposit Funds:" << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "Enter Your Choice:";
-
-    std::string input;
-    std::getline(std::cin, input);
-    
-    if (input == "0")
-    {
-        return;
-    } else if (input == "1")
-    {
-        Wallet::makeDeposit();
-        return;
-    } else {
-        std::cout << "Invalid Choice: Returning to Main Menu" << std::endl;
-        return;
-    }
 }
 
 
 void Wallet::makeDeposit()
 {
+
+    printSupportedCurrencies();
+
     std::cout << "Enter Currency Name, Amount" << std::endl;
     std::cout << "Example: BTC, 1000" << std::endl;
     std::cout << "Make Deposit:";
 
     std::string input;
-    std::getline(std::cin, input);
+    
+    if (!std::getline(std::cin, input))
+    {
+        std::cout << "End Of File Detected - Exiting Gracefully"
+                << std::endl;
 
+        std::exit(0);
+    }
     std::vector<std::string> depositTokens = CSVReader::tokenise(input, ',');
 
     if (depositTokens.size() != 2)
@@ -211,7 +200,7 @@ void Wallet::makeDeposit()
         }
     }
 
-const std::set<std::string> Wallet::supportedCurrencies =
+const std::vector<std::string> Wallet::supportedCurrencies =
 {
     "USDT",
     "BTC",
@@ -220,3 +209,18 @@ const std::set<std::string> Wallet::supportedCurrencies =
     "DOGE",
     "SOL"
 };
+bool Wallet::isSupportedCurrency(const std::string& currency)
+{
+    return std::find(supportedCurrencies.begin(), supportedCurrencies.end(), currency) != supportedCurrencies.end();
+}
+
+void Wallet::printSupportedCurrencies()
+{
+    std::cout << "Supported Currencies: ";
+    for (std::size_t i = 0; i < supportedCurrencies.size() - 1; ++i)
+    {
+        std::cout << supportedCurrencies[i] << ", ";
+    }
+        std::cout << supportedCurrencies.back() << std::endl;
+
+}
