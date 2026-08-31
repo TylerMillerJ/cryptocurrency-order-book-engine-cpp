@@ -1,11 +1,13 @@
 #include "MerkelMain.h"
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
+#include "Wallet.h"
 
 #include <iostream>
 #include <cstdlib>
 #include <vector>
 #include <stdexcept>
+#include <iomanip>
 
 MerkelMain::MerkelMain(){
 
@@ -15,22 +17,7 @@ void MerkelMain::initialize(){
 
     int input;
     currentTime = orderBook.getEarliestTime();
-
-    /*
-    wallet.insertCurrency("BTC", 11);
-    wallet.insertCurrency("USD", 1.9);
-    wallet.insertCurrency("ETH", 7.99857);
-
-    std::cout <<"Wallet Has BTC?: " <<   wallet.containsCurrency("BTC", 10) << std::endl;
-    std::cout << wallet.toString() << std::endl;
-
-    wallet.removeCurrency("BTC", 10);
-    wallet.removeCurrency("USD", 10);
-    wallet.removeCurrency("ETH", -7.99857);
-
-    std::cout << wallet.toString() << std::endl;
-*/
-
+    wallet.insertCurrency("BTC", 10000);
 
     while(true)
     {
@@ -68,7 +55,7 @@ void MerkelMain::printMenuOptions()
     std::cout << "5. Open Wallet" << std::endl;
 
     // 6. Continue
-    std::cout << "6. Continue" << std::endl;
+    std::cout << "6. Continue To Next Time Frame In Simulation" << std::endl;
 
     std::cout << std::endl;
 
@@ -153,7 +140,7 @@ void MerkelMain::proccessMenuOptions(int userOption)
         break;
 
     case 5:
-        printWallet();
+        wallet.printWallet();
         break;
 
     case 6:
@@ -172,14 +159,19 @@ void MerkelMain::printHelpMenu()
 
 void MerkelMain::printExchangeStatistics()
 {
-
+    std::cout << std::setprecision(15);
+    
     for (std::string const& product : orderBook.getKnownProducts())
     {
         std::cout << "Product: " << product << std::endl;
+        std::cout << std::endl;
+
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::bid, product, currentTime);
+
         std::cout << "Bids Seen " << entries.size() << std::endl;
         std::cout << "Max Bid " << OrderBook::getHighPrice(entries) << std::endl;
         std::cout << "Min Bid " << OrderBook::getLowPrice(entries) << std::endl;
+        std::cout << "-----------------------------------" << OrderBook::getLowPrice(entries) << std::endl;
 
     }
   
@@ -207,6 +199,7 @@ void MerkelMain::enterAsk()
             
             if (wallet.canFullfillOrder(entry))
             {
+                entry.username = "simulationUser";
                 orderBook.insertOrder(entry);
                 std::cout << "Your Ask Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
             } else {
@@ -226,25 +219,79 @@ void MerkelMain::enterAsk()
 
 void MerkelMain::enterBid()
 {
-    std::cout << "Making a bid" << std::endl;
-}
+    std::cout << "Make an Bid - Format: Product, Price, Amount" << std::endl;
+    std::cout << "eg: BTC/ETH, 200, 0.5" << std::endl;
+    std::cout << "Product, Price, Amount: ";
 
-void MerkelMain::printWallet()
-{
-    std::cout << "Opening Wallet..." << std::endl;
+    std::string input;
+    std::getline(std::cin, input);
+
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+
+    if (tokens.size() != 3)
+    {
+        std::cerr << "Error: Does not have 3 tokens: " << input << std::endl;
+    } else 
+    {
+        try
+        {
+            OrderBookEntry entry = CSVReader::stringToOrderBookEntry(currentTime, tokens[0], OrderBookType::bid, tokens[1], tokens[2]);
+            
+            if (wallet.canFullfillOrder(entry))
+            {
+                entry.username = "simulationUser";
+                orderBook.insertOrder(entry);
+                std::cout << "Your Bid Has Been Submitted: " << entry.timestamp << ", " << entry.product << ", ask, " << entry.price << ", " << entry.amount << std::endl;
+            } else {
+                std::cout << "Wallet has insufficient funds" <<  std::endl;
+        
+            }
+
+        }
+        catch (const std::exception& exception)
+        {
+            std::cerr << "enterBid(): Entry Failed" << std::endl;
+        }
+    }
+
 }
 
 void MerkelMain::continueToNextTimeFrame()
 {
     std::cout << "Continuing forward in time" << std::endl;
-    std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids("ETH/BTC", currentTime);
-    std::cout << "Sales Made: " << sales.size() << std::endl;
-    for (OrderBookEntry sale : sales)
+
+    std::vector<OrderBookEntry> allSales;
+
+    for (std::string product : orderBook.getKnownProducts())
     {
-        std::cout << "Sale Price: " << sale.price << std::endl;
-        std::cout << "Sale Amount: " << sale.amount << std::endl;
+        std::vector<OrderBookEntry> sales =
+            orderBook.matchAsksToBids(product, currentTime);
 
+        for (OrderBookEntry& sale : sales)
+        {
+            allSales.push_back(sale);
 
+            if (sale.username == "simulationUser")
+            {
+                wallet.processSale(sale);
+            }
+        }
     }
+
+    std::cout << "Matching Orders Complete" << std::endl;
+    std::cout << "Total Sales Made: "
+              << allSales.size()
+              << std::endl;
+
+    for (OrderBookEntry& sale : allSales)
+    {
+        std::cout << "Sale:" << std::endl;
+        std::cout << "Product: " << sale.product
+                  << " | Price: " << sale.price
+                  << " | Amount: " << sale.amount
+                  << std::endl;
+    }
+
     currentTime = orderBook.getNextTime(currentTime);
 }
+

@@ -3,12 +3,10 @@
 
 #include <string>
 
-enum class OrderBookType{bid, ask, sale, unknown};
+enum class OrderBookType{bid, ask, asksale, bidsale, unknown};
 
 class OrderBookEntry
 {
-    private:
-
     public:
         std::string timestamp;
         std::string product;
@@ -21,8 +19,9 @@ class OrderBookEntry
         static bool compareByPriceAscending(OrderBookEntry& entry1, OrderBookEntry& entry2);
         static bool compareByPriceDescending(OrderBookEntry& entry1, OrderBookEntry& entry2);
 
-        OrderBookEntry(std::string timestamp, std::string product, OrderBookType type, double price, double amount);
+        OrderBookEntry(std::string timestamp, std::string product, OrderBookType type, double price, double amount, std::string username = "dataset");
         static OrderBookType stringToOrderBookType(std::string string);
+        std::string username;
 };
 
 

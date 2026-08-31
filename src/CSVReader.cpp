@@ -30,7 +30,6 @@ std::vector<OrderBookEntry> CSVReader::readCSV(std::string csvFilename)
             OrderBookEntry entry = stringToOrderBookEntry(tokenise(line, ','));
             entries.push_back(entry);
             } catch(const std::exception&  e){
-                std::cerr << "CSVReader::readCSV Passed Bad Line" << std::endl;
             }
         } //endwhile
         std::cout <<"CSVReader::readCSV read " << entries.size() << " entries." <<std::endl;
@@ -75,7 +74,6 @@ OrderBookEntry CSVReader::stringToOrderBookEntry(std::vector<std::string> tokens
 {   
     if (tokens.size() != 5)
     {
-        std::cerr << "Bad Line" << std::endl;
         throw std::exception{};
     }
 

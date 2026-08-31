@@ -13,8 +13,15 @@ More details will be added throughout the course and completion of this project,
 This crypto trading system coded is a C++ is built as a guided project on coursera created by Professor Matthew Yee-King of University Of London's Object Oriented Programming Specialization 
 
 ## TODO
- -Verify Ask/Bid entries are a valid product, double, double, prior to entry
 
--Implement Enter Bid
+- Empty sale printing
+- aks not acutally fullfilling anything
+- time should be automated not a menu option
+- doubles showing in scientific notation
+ - clean deeply nested if statements and structure
+- Check currency types are valid currency types
+ -Verify Ask/Bid entries are a valid product, double, double, prior to entry
+-Implement all special comments
+
 
 -asks are not being saved to the same order book that printexchangestatistics sees.

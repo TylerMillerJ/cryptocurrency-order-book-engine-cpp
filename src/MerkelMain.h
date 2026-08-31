@@ -25,7 +25,6 @@ class MerkelMain{
         void printExchangeStatistics();
         void enterAsk();
         void enterBid();
-        void printWallet();
         void continueToNextTimeFrame();
 
         std::string currentTime;

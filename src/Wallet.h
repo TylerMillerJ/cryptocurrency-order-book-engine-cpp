@@ -26,6 +26,13 @@ class Wallet
         /** checks if the wallet can fullfill this ask/bid*/
         bool canFullfillOrder(OrderBookEntry order);
         
+        /** processes sale input*/
+        void processSale(OrderBookEntry& sale);
+
+        void printWallet();
+
+        void makeDeposit();
+
 
     private:
         std::map<std::string, double> currencies;
